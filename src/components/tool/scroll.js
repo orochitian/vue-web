@@ -1,4 +1,7 @@
-export default function (index) {
+export default function (index, callback) {
+    //  每次点击导航清空滚动监听，否则会导致滚动与点击滚动冲突，最终滚动位置错误
+    window.onscroll = null;
+    
     var timmer = null;
     //  滚动速度
     var scrollSpeed = 20;
@@ -16,6 +19,7 @@ export default function (index) {
             if( scrollTop >= toTop ) {
                 clearInterval(timmer);
                 scrollTop = scrollTop - offset;
+                callback();
             }
             window.scrollTo(0, scrollTop - offset);
         } else {    //  如果当前位置大于要滚动的位置，则向上滚动
@@ -23,9 +27,9 @@ export default function (index) {
             if( scrollTop <= toTop ) {
                 clearInterval(timmer);
                 scrollTop = scrollTop - offset;
+                callback();
             }
             window.scrollTo(0, scrollTop - offset);
         }
-
     }, 10);
 }

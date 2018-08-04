@@ -52,9 +52,27 @@
         },
         methods: {
             changeCurrent: function (index) {
-                this.currentLink =  index;
-                scroll(index);
+                var that = this;
+                scroll.call(this, index, function () {
+                    that.currentLink =  index;
+                    that.windowScroll();
+                })
+            },
+            windowScroll: function () {
+                var that = this;
+                var sections = document.getElementsByClassName('section');
+                window.onscroll = function () {
+                    var scrollTop = document.documentElement.scrollTop;
+                    for( var i=0; i<sections.length; i++ ) {
+                        if( scrollTop >= sections[i].offsetTop - 20 ) {
+                            that.currentLink = i;
+                        }
+                    }
+                }
             }
+        },
+        mounted: function () {
+            this.windowScroll();
         }
     }
 </script>
